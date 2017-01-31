@@ -6,6 +6,8 @@
 //  Copyright © 2017 Dirk Milotz. All rights reserved.
 //
 
+import Foundation
+
 import CoreData
 
 // MARK: - CoreDataStack
@@ -152,7 +154,7 @@ extension CoreDataStack {
         
         if delayInSeconds > 0 {
             do {
-                try self.context.save()
+                try save()
                 print("Autosaving")
             } catch {
                 print("Error while autosaving")

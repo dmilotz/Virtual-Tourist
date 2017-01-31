@@ -2,9 +2,8 @@
 //  Pin+CoreDataProperties.swift
 //  Virtual tourist
 //
-//  Created by Dirk Milotz on 1/27/17.
+//  Created by Dirk Milotz on 1/31/17.
 //  Copyright © 2017 Dirk Milotz. All rights reserved.
-//  This file was automatically generated and should not be edited.
 //
 
 import Foundation
@@ -18,8 +17,9 @@ extension Pin {
     }
 
     @NSManaged public var creationDate: NSDate?
-    @NSManaged public var longitude: Double
     @NSManaged public var latitude: Double
+    @NSManaged public var longitude: Double
+    @NSManaged public var locationName: String?
     @NSManaged public var photos: NSSet?
 
 }

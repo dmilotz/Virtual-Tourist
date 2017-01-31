@@ -29,7 +29,7 @@ class FlickrClient : NSObject {
     
     
     
-    func getFlickrPhotos(latitude: String, longitude:String, completionHandlerForGetPhotos: @escaping (NSError?, [PhotoModel]?) -> Void) {
+   static func getFlickrPhotos(latitude: String, longitude:String, completionHandlerForGetPhotos: @escaping (NSError?, [PhotoModel]?) -> Void) {
         
         
         let url = Constants.flickrApiUrl + Constants.flickrPhotoLocationMethod + FlickrArgs.apiKey +  FlickrArgs.latitude + latitude + FlickrArgs.longitude + longitude + FlickrArgs.jsonFormat
@@ -75,7 +75,7 @@ class FlickrClient : NSObject {
                     let flickrPhoto = PhotoModel(photoId: photoId, farm: farm, secret: secret, server: server, title: title)
                     return flickrPhoto
                 }
-                print (flickrPhotos)
+                //print (flickrPhotos)
                 completionHandlerForGetPhotos(nil, flickrPhotos)
                 
             } catch let error as NSError {
@@ -90,13 +90,25 @@ class FlickrClient : NSObject {
         
     }
     
+    
+   static func getDataFromUrl(url: URL, completion: @escaping (_ data: Data?, _  response: URLResponse?, _ error: Error?) -> Void) {
+        URLSession.shared.dataTask(with: url) {
+            (data, response, error) in
+            guard let data = data, error == nil else{
+                print("problem loading photo from url \(url)")
+                return
+            }
+            
+            completion(data, response, error)
+            }.resume()
+    }
 
     
     
-    class func sharedInstance() -> FlickrClient {
-        struct Singleton {
-            static var sharedInstance = FlickrClient()
-        }
-        return Singleton.sharedInstance
-    }
+//    class func sharedInstance() -> FlickrClient {
+//        struct Singleton {
+//            static var sharedInstance = FlickrClient()
+//        }
+//        return Singleton.sharedInstance
+//    }
 }
