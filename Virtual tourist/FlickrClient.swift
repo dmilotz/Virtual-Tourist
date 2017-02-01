@@ -20,16 +20,17 @@ class FlickrClient : NSObject {
     
     // MARK: Initializers
     
-    override init() {
-        super.init()
-    }
+//    override init() {
+//        super.init()
+//    }
     
     
     
-   static func getFlickrPhotos(latitude: String, longitude:String, completionHandlerForGetPhotos: @escaping (NSError?, [PhotoModel]?) -> Void) {
+    static func getFlickrPhotos(latitude: String, longitude:String, completionHandlerForGetPhotos: @escaping (_ error: String?, [PhotoModel]?) -> Void) {
+    
+        let randomPageNum = String(Int(arc4random_uniform(10)))
         
-        
-        let url = Constants.flickrApiUrl + Constants.flickrPhotoLocationMethod + FlickrArgs.apiKey +  FlickrArgs.latitude + latitude + FlickrArgs.longitude + longitude + FlickrArgs.jsonFormat
+        let url = Constants.flickrApiUrl + Constants.flickrPhotoLocationMethod + FlickrArgs.apiKey +  FlickrArgs.latitude + latitude + FlickrArgs.longitude + longitude + FlickrArgs.pageNum + randomPageNum + FlickrArgs.jsonFormat
         
         print(url)
         
@@ -41,7 +42,7 @@ class FlickrClient : NSObject {
             
             if error != nil {
                 print("Error fetching photos: \(error)")
-                completionHandlerForGetPhotos(error as NSError?, nil)
+                completionHandlerForGetPhotos(error?.localizedDescription as String!, nil)
                 return
             }
             
@@ -51,9 +52,8 @@ class FlickrClient : NSObject {
                 
                 if let statusCode = results["code"] as? Int {
                     if statusCode == 100 {
-                        print(error?.localizedDescription)
                         let invalidAccessError = NSError(domain: "com.flickr.api", code: statusCode, userInfo: nil)
-                        completionHandlerForGetPhotos(invalidAccessError, nil)
+                        completionHandlerForGetPhotos(invalidAccessError.localizedDescription as String!, nil)
                         return
                     }
                 }
@@ -61,7 +61,11 @@ class FlickrClient : NSObject {
                 guard let photosContainer = resultsDictionary!["photos"] as? NSDictionary else { return }
                 guard let photosArray = photosContainer["photo"] as? [NSDictionary] else { return }
                 
-                let flickrPhotos: [PhotoModel] = photosArray.map { photoDictionary in
+                if (randomPageNum == "0" && photosArray.isEmpty){
+                    completionHandlerForGetPhotos("No Photos Found", nil)
+                }
+                else{
+                    let flickrPhotos: [PhotoModel] = photosArray.map { photoDictionary in
                     
                     let photoId = photoDictionary["id"] as? String ?? ""
                     let farm = photoDictionary["farm"] as? Int ?? 0
@@ -71,13 +75,12 @@ class FlickrClient : NSObject {
                     
                     let flickrPhoto = PhotoModel(photoId: photoId, farm: farm, secret: secret, server: server, title: title)
                     return flickrPhoto
-                }
+                    }
                 //print (flickrPhotos)
                 completionHandlerForGetPhotos(nil, flickrPhotos)
-                
-            } catch let error as NSError {
+                    }}catch let error as NSError {
                 print("Error parsing JSON: \(error)")
-                completionHandlerForGetPhotos(error, nil)
+                completionHandlerForGetPhotos(error.localizedDescription as! String, nil)
                 return
             }
             

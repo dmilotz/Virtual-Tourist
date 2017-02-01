@@ -3,6 +3,7 @@
     <entity name="Photo" representedClassName="Photo" syncable="YES">
         <attribute name="creationDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="imgData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
+        <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="pin" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Pin" inverseName="photos" inverseEntity="Pin" syncable="YES"/>
     </entity>
     <entity name="Pin" representedClassName="Pin" syncable="YES">
@@ -13,7 +14,7 @@
         <relationship name="photos" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Photo" inverseName="pin" inverseEntity="Photo" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Photo" positionX="-137" positionY="-36" width="128" height="88"/>
+        <element name="Photo" positionX="-137" positionY="-36" width="128" height="105"/>
         <element name="Pin" positionX="-396" positionY="-18" width="128" height="120"/>
     </elements>
 </model>

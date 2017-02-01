@@ -2,7 +2,7 @@
 //  Photo+CoreDataProperties.swift
 //  Virtual tourist
 //
-//  Created by Dirk Milotz on 1/29/17.
+//  Created by Dirk Milotz on 2/1/17.
 //  Copyright © 2017 Dirk Milotz. All rights reserved.
 //
 
@@ -18,6 +18,7 @@ extension Photo {
 
     @NSManaged public var creationDate: NSDate?
     @NSManaged public var imgData: NSData?
+    @NSManaged public var url: String?
     @NSManaged public var pin: Pin?
 
 }

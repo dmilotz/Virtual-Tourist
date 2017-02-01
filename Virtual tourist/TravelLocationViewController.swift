@@ -22,8 +22,8 @@ class TravelLocationViewController : UIViewController {
     var lat : Double?
     var long: Double?
     
+    var dragPin: MKPointAnnotation!
     
-        
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -33,9 +33,9 @@ class TravelLocationViewController : UIViewController {
         
         self.tapRecognizer.delegate = self
         self.mapView.delegate = self
-        let uilgr = UILongPressGestureRecognizer(target: self, action: #selector(addAnnotation(gestureRecognizer:)))
+        let uilgr = UILongPressGestureRecognizer(target: self, action: #selector(addPin(gestureRecognizer:)))
         
-        uilgr.minimumPressDuration = 1.5
+        uilgr.numberOfTouchesRequired = 1
         mapView.addGestureRecognizer(uilgr)
         loadPins()
         
@@ -46,20 +46,18 @@ class TravelLocationViewController : UIViewController {
     func getFlickrPhotosFromLocation(coordinate: CLLocationCoordinate2D){
         FlickrClient.getFlickrPhotos(latitude: String(coordinate.latitude), longitude: String(coordinate.longitude)) { (error, photoArray) in
             if(error == nil){
-                if photoArray!.count < 20{
+                if (photoArray?.isEmpty)!{
+                    self.getFlickrPhotosFromLocation(coordinate: coordinate)
+                    return
+                }
+                else{
                     for photo in photoArray!{
                         self.loadPhotos(url: photo.photoUrl)
-                    }
-                }else{
-                    for photo in photoArray![0..<20]{
-                        self.loadPhotos(url: photo.photoUrl)
-                        //print(photo)
                     }
                 }
             }
             else{
-                print(error?.localizedDescription)
-            }
+                self.displayAlert(error!, title: "")            }
         }
         
     }
@@ -73,8 +71,11 @@ class TravelLocationViewController : UIViewController {
                 return
             }
             if let pin = self.pin{
-                let photo = Photo(img: data as NSData, context: self.stack.context)
-                photo.pin = pin
+                DispatchQueue.main.async{
+                    let photo = Photo(img: data as NSData, context: self.stack.context)
+                    photo.pin = pin
+                }
+                
             }
         })
         
@@ -107,49 +108,30 @@ class TravelLocationViewController : UIViewController {
         
     }
     
-    
-    func addAnnotation(gestureRecognizer:UILongPressGestureRecognizer){
-        
+    func addPin(gestureRecognizer:UIGestureRecognizer){
+        let touchPoint = gestureRecognizer.location(in: mapView)
+        let newCoordinates = mapView.convert(touchPoint, toCoordinateFrom: mapView)
+        if dragPin != nil {
+            dragPin.coordinate = newCoordinates
+        }
         if gestureRecognizer.state == UIGestureRecognizerState.began {
+            dragPin = MKPointAnnotation()
+            dragPin.coordinate = newCoordinates
+            dragPin.title = ""
+            mapView.addAnnotation(dragPin)
+        } else if gestureRecognizer.state == UIGestureRecognizerState.ended {
             let touchPoint = gestureRecognizer.location(in: mapView)
             let newCoordinates = mapView.convert(touchPoint, toCoordinateFrom: mapView)
-            
-            
-            let annotation = MKPointAnnotation()
-            
-            annotation.coordinate = newCoordinates
-            
-            getFlickrPhotosFromLocation(coordinate: annotation.coordinate)
-            //            annotation.title = "title"
-            //            mapView.addAnnotation(annotation)
-            
-            CLGeocoder().reverseGeocodeLocation(CLLocation(latitude: newCoordinates.latitude, longitude: newCoordinates.longitude), completionHandler: {(placemarks, error) -> Void in
-                if error != nil {
-                    print("Reverse geocoder failed with error" + (error?.localizedDescription)!)
-                    return
-                }
-                
-                if (placemarks?.count)! > 0 {
-                    let pm = placemarks![0]
-                    
-                    // not all places have thoroughfare & subThoroughfare so validate those values
-                    annotation.title = pm.name
-                    self.mapView.addAnnotation(annotation)
-                    self.pin = Pin(title: annotation.title!, longitude: newCoordinates.longitude.roundTo(places: 6), latitude: newCoordinates.latitude.roundTo(places: 6), context: self.stack.context)
-                    print("Just created a pin: \(self.pin)")
-                    print(pm)
-                }
-                else {
-                    annotation.title = "Unknown Place"
-                    self.mapView.addAnnotation(annotation)
-                    self.pin = Pin(title: annotation.title!, longitude: newCoordinates.longitude.roundTo(places: 6), latitude: newCoordinates.latitude.roundTo(places: 6), context: self.stack.context)
-                    print("Just created a pin: \(self.pin)")
-                    print("Problem with the data received from geocoder")
-                }
-            })
+            dragPin.coordinate = newCoordinates
+            getFlickrPhotosFromLocation(coordinate: dragPin.coordinate)
+            dragPin.title = ""
+            //self.mapView.addAnnotation(dragPin)
+            // DispatchQueue.main.async{
+            self.pin = Pin(title: self.dragPin.title!, longitude: self.dragPin.coordinate.longitude.roundTo(places: 6), latitude: self.dragPin.coordinate.latitude.roundTo(places: 6), context: self.stack.context)
+            //}
+            getFlickrPhotosFromLocation(coordinate: dragPin.coordinate)
+            dragPin = nil
         }
-        
-        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -178,14 +160,16 @@ extension TravelLocationViewController: UIGestureRecognizerDelegate{
 
 extension TravelLocationViewController :MKMapViewDelegate{
     
-//    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView,
-//                 calloutAccessoryControlTapped control: UIControl) {
-//        print("PIN WAS tapped")
-//    }
+    //    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView,
+    //                 calloutAccessoryControlTapped control: UIControl) {
+    //        print("PIN WAS tapped")
+    //    }
     
     
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        mapView.deselectAnnotation(view.annotation, animated: true)
+        
         lat = view.annotation?.coordinate.latitude
         long = view.annotation?.coordinate.longitude
         
@@ -204,7 +188,7 @@ extension TravelLocationViewController :MKMapViewDelegate{
         if let pin = fetchedResults?[0]{
             self.pin = pin
         }else{
-         displayAlert("Pin was not found.", title: "Error")
+            displayAlert("Pin was not found.", title: "Error")
         }
         performSegue(withIdentifier: "photos", sender: self)
     }
@@ -213,9 +197,7 @@ extension TravelLocationViewController :MKMapViewDelegate{
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         
         let reuseId = "pin"
-        
         var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
-        
         if pinView == nil {
             pinView?.canShowCallout = false
             pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
@@ -229,7 +211,7 @@ extension TravelLocationViewController :MKMapViewDelegate{
         return pinView
     }
     
-
+    
     
 }
 

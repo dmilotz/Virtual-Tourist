@@ -12,7 +12,6 @@ import CoreData
 import MapKit
 class PhotoAlbumViewController :UIViewController {
     
-    @IBOutlet var actInd: UIActivityIndicatorView!
     
     @IBOutlet var mapView: MKMapView!
     
@@ -27,14 +26,14 @@ class PhotoAlbumViewController :UIViewController {
     }
     
     @IBAction func newCollection(_ sender: UIBarButtonItem) {
-        actInd.startAnimating()
         imageCache = []
-        newCollectionButton.isEnabled = false
         removePhotos()
         collectionView.reloadData()
         let coordinate = CLLocationCoordinate2D(latitude: pin!.latitude, longitude: pin!.longitude)
         getFlickrPhotosFromLocation(coordinate: coordinate)
     }
+    
+    
     // MARK: Properties
     
     var photos: [Photo] = []
@@ -73,15 +72,30 @@ class PhotoAlbumViewController :UIViewController {
     func getFlickrPhotosFromLocation(coordinate: CLLocationCoordinate2D){
         FlickrClient.getFlickrPhotos(latitude: String(coordinate.latitude), longitude: String(coordinate.longitude)) { (error, photoArray) in
             if(error == nil){
+                if (photoArray?.isEmpty)!{
+                    self.getFlickrPhotosFromLocation(coordinate: coordinate)
+                    return
+                }
+                else{
                     for photo in photoArray!{
-                        self.getPhotos(url: photo.photoUrl)
+                        print (photo.photoUrl.absoluteString)
+                        DispatchQueue.main.async {
+                            let photo = Photo(url: photo.photoUrl.absoluteString, context: self.stack.context)
+                            photo.pin = self.pin
+                            photo.imgData = nil
+                            self.photos.append(photo)
+                        }
+                     
                     }
-                    //self.loadPhotos()
                     self.newCollectionButton.isEnabled = true
-                    self.actInd.stopAnimating()
+                    OperationQueue.main.addOperation {
+                        self.collectionView.reloadData()
+                    }
+                }
+            
             }
             else{
-                print(error?.localizedDescription)
+                self.displayAlert(error!, title: "")
             }
         }
         
@@ -96,13 +110,11 @@ class PhotoAlbumViewController :UIViewController {
                 print("Problem downloading photo from \(url)")
                 return
             }
-            DispatchQueue.main.async {
-           
                 let photo = Photo(img: data as NSData, context: self.stack.context)
                 photo.pin = self.pin
                 self.photos.append(photo)
             
-            }
+          
                 OperationQueue.main.addOperation {
                     self.collectionView.reloadData()
                 }
@@ -113,7 +125,6 @@ class PhotoAlbumViewController :UIViewController {
     
     func loadPhotos()
     {
-        actInd.startAnimating()
         let pred = NSPredicate(format: "pin = %@", argumentArray: [pin!])
         
         // Create a fetchrequest
@@ -129,8 +140,11 @@ class PhotoAlbumViewController :UIViewController {
         }else{
             print("error retrieving photos")
         }
+        for photo in photos{
+            imageCache.append(photo.imgData as! Data)
+        }
+        
         collectionView.reloadData()
-        actInd.stopAnimating()
     }
     
     
@@ -188,6 +202,9 @@ extension PhotoAlbumViewController: UICollectionViewDelegate{
     }
     
 }
+
+
+
     // MARK: Collection View Data Source
 extension PhotoAlbumViewController : UICollectionViewDataSource{
     
@@ -195,26 +212,40 @@ extension PhotoAlbumViewController : UICollectionViewDataSource{
         return self.photos.count
     }
     
+    
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let photo = self.photos[(indexPath as NSIndexPath).row]
 
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "pic", for: indexPath) as! PhotoCollectionViewCell
         
-        if (imageCache.contains(photo.imgData as! Data)){
+        if (photo.imgData != nil){
             cell.pic?.image =  UIImage(data: photo.imgData as! Data)
-
         }
         else{
+            let url = URL(string:photo.url!)
+            FlickrClient.getDataFromUrl(url: url!, completion: { (data, response, error) in
+                
+                guard let data = data, error == nil else {
+                    print("Problem downloading photo from \(url)")
+                    return
+                }
+                DispatchQueue.main.async {
+                cell.pic?.image = UIImage(data: data)
+                photo.imgData = data as NSData?
+                //self.collectionView.reloadData()
+                cell.actInd.stopAnimating()
+                }
+               
+            })
             cell.pic?.image = UIImage(named: "default.png")
-            imageCache.append(photo.imgData as! Data)
-            DispatchQueue.main.async() { () -> Void in
-                cell.pic?.image =  UIImage(data: photo.imgData as! Data)
-            }
+            cell.actInd.startAnimating()
         }
-       
         return cell
     }
+    
+    
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.stack.context.delete(self.photos[(indexPath as NSIndexPath).row])

@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		1128D1A31E3C380A00AFAB20 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1128D1A21E3C380A00AFAB20 /* AppDelegate.swift */; };
-		1128D1A51E3C380A00AFAB20 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1128D1A41E3C380A00AFAB20 /* ViewController.swift */; };
 		1128D1A81E3C380A00AFAB20 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1128D1A61E3C380A00AFAB20 /* Main.storyboard */; };
 		1128D1AB1E3C380A00AFAB20 /* Virtual_tourist.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1128D1A91E3C380A00AFAB20 /* Virtual_tourist.xcdatamodeld */; };
 		1128D1AD1E3C380A00AFAB20 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1128D1AC1E3C380A00AFAB20 /* Assets.xcassets */; };
@@ -50,7 +49,6 @@
 /* Begin PBXFileReference section */
 		1128D19F1E3C380A00AFAB20 /* Virtual tourist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Virtual tourist.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1128D1A21E3C380A00AFAB20 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		1128D1A41E3C380A00AFAB20 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		1128D1A71E3C380A00AFAB20 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1128D1AA1E3C380A00AFAB20 /* Virtual_tourist.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Virtual_tourist.xcdatamodel; sourceTree = "<group>"; };
 		1128D1AC1E3C380A00AFAB20 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -126,7 +124,6 @@
 			isa = PBXGroup;
 			children = (
 				1128D1A21E3C380A00AFAB20 /* AppDelegate.swift */,
-				1128D1A41E3C380A00AFAB20 /* ViewController.swift */,
 				1128D1DB1E3D4A9700AFAB20 /* Models */,
 				1128D1DE1E3D4B0A00AFAB20 /* Controllers */,
 				1128D1E31E3D4C3A00AFAB20 /* Assets */,
@@ -337,7 +334,6 @@
 			files = (
 				11B8EC8F1E4185D8006E3BB8 /* UIViewExtension.swift in Sources */,
 				1128D21A1E3F116100AFAB20 /* PhotoCell.swift in Sources */,
-				1128D1A51E3C380A00AFAB20 /* ViewController.swift in Sources */,
 				1128D2181E3ED5E500AFAB20 /* Photo+CoreDataProperties.swift in Sources */,
 				1128D2151E3ED5E500AFAB20 /* Pin+CoreDataClass.swift in Sources */,
 				1128D1E21E3D4B9300AFAB20 /* PhotoAlbumViewController.swift in Sources */,

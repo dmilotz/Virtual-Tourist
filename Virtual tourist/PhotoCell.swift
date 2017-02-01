@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 class PhotoCollectionViewCell : UICollectionViewCell{
     
+    @IBOutlet var actInd: UIActivityIndicatorView!
     
     @IBOutlet var pic: UIImageView!
     
