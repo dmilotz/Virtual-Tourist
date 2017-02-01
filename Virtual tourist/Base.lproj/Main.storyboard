@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina4_7" orientation="portrait">
+    <device id="ipad12_9" orientation="landscape">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -18,11 +18,11 @@
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1366" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="3K4-CA-p2e">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="0.0" width="1366" height="1024"/>
                                 <gestureRecognizers/>
                             </mapView>
                         </subviews>
@@ -56,11 +56,11 @@
                         <viewControllerLayoutGuide type="bottom" id="lhY-wh-2eX"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Kng-tC-aYk">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1366" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="gQA-pQ-tSe">
-                                <rect key="frame" x="0.0" y="182" width="375" height="441"/>
+                                <rect key="frame" x="0.0" y="182" width="1366" height="798"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ABA-jF-3uq">
                                     <size key="itemSize" width="50" height="50"/>
@@ -98,21 +98,36 @@
                                 </connections>
                             </collectionView>
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aQZ-XB-rgo">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="0.0" width="1366" height="44"/>
                                 <items>
-                                    <navigationItem title="Title" id="GvH-Yf-K5H"/>
+                                    <navigationItem id="GvH-Yf-K5H">
+                                        <barButtonItem key="leftBarButtonItem" systemItem="reply" id="RZq-jd-Vc2" userLabel="Back">
+                                            <connections>
+                                                <action selector="backButton:" destination="b8Z-3c-DuL" id="LSt-Kc-1Sx"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
                                 </items>
                             </navigationBar>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="zjZ-GX-wIq">
+                                <rect key="frame" x="673" y="502" width="20" height="20"/>
+                            </activityIndicatorView>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="G2Y-4z-GpJ">
-                                <rect key="frame" x="0.0" y="44" width="375" height="130"/>
+                                <rect key="frame" x="0.0" y="44" width="1366" height="130"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="130" id="eeC-G1-4gu"/>
                                 </constraints>
                             </mapView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UcV-pg-eW7">
-                                <rect key="frame" x="0.0" y="623" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="980" width="1366" height="44"/>
                                 <items>
-                                    <barButtonItem title="Item" id="osx-Qd-4Z1"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="CTq-Wa-dQ9"/>
+                                    <barButtonItem title="New Collection" id="osx-Qd-4Z1" userLabel="New Collection">
+                                        <connections>
+                                            <action selector="newCollection:" destination="b8Z-3c-DuL" id="d8Q-SQ-pAG"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="TwI-yg-MdN"/>
                                 </items>
                             </toolbar>
                         </subviews>
@@ -127,6 +142,7 @@
                             <constraint firstAttribute="trailing" secondItem="UcV-pg-eW7" secondAttribute="trailing" id="GEh-H7-x7u"/>
                             <constraint firstItem="gQA-pQ-tSe" firstAttribute="leading" secondItem="Kng-tC-aYk" secondAttribute="leading" id="GF0-JH-TE0"/>
                             <constraint firstItem="G2Y-4z-GpJ" firstAttribute="top" secondItem="aQZ-XB-rgo" secondAttribute="bottom" id="GtW-Jz-upG"/>
+                            <constraint firstItem="zjZ-GX-wIq" firstAttribute="centerX" secondItem="Kng-tC-aYk" secondAttribute="centerX" id="HFV-JR-NQ9"/>
                             <constraint firstItem="gQA-pQ-tSe" firstAttribute="leading" secondItem="Kng-tC-aYk" secondAttribute="leading" id="Hf6-w2-cbG"/>
                             <constraint firstAttribute="trailing" secondItem="gQA-pQ-tSe" secondAttribute="trailing" id="LXo-ZX-bS9"/>
                             <constraint firstItem="UcV-pg-eW7" firstAttribute="leading" secondItem="Kng-tC-aYk" secondAttribute="leading" id="NSg-9W-CUd"/>
@@ -140,17 +156,20 @@
                             <constraint firstItem="aQZ-XB-rgo" firstAttribute="top" secondItem="Kng-tC-aYk" secondAttribute="top" id="ldv-yi-mIb"/>
                             <constraint firstItem="gQA-pQ-tSe" firstAttribute="top" secondItem="G2Y-4z-GpJ" secondAttribute="bottom" constant="8" id="m0A-oK-xiJ"/>
                             <constraint firstAttribute="trailing" secondItem="gQA-pQ-tSe" secondAttribute="trailing" id="rIl-Cd-bfQ"/>
+                            <constraint firstItem="zjZ-GX-wIq" firstAttribute="centerY" secondItem="Kng-tC-aYk" secondAttribute="centerY" id="sJ5-Vu-pHy"/>
                             <constraint firstItem="gQA-pQ-tSe" firstAttribute="top" secondItem="G2Y-4z-GpJ" secondAttribute="bottom" constant="8" id="tBy-aZ-JtR"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="actInd" destination="zjZ-GX-wIq" id="9Lr-5p-iAf"/>
                         <outlet property="collectionView" destination="gQA-pQ-tSe" id="UnC-Y3-9Td"/>
                         <outlet property="mapView" destination="G2Y-4z-GpJ" id="esU-sE-Bkq"/>
+                        <outlet property="newCollectionButton" destination="osx-Qd-4Z1" id="GE4-WG-m6g"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2BL-hh-Oa6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="892" y="112.89355322338831"/>
+            <point key="canvasLocation" x="1170" y="-41"/>
         </scene>
     </scenes>
 </document>

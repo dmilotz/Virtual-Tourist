@@ -14,9 +14,6 @@ import UIKit
 
 class FlickrClient : NSObject {
     
-    // MARK: Properties
-    
-    
     // shared session
     var session = URLSession.shared
 
@@ -102,6 +99,7 @@ class FlickrClient : NSObject {
             completion(data, response, error)
             }.resume()
     }
+
 
     
     

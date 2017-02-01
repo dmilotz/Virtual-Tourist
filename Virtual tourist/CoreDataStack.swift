@@ -86,8 +86,39 @@ struct CoreDataStack {
 
 // MARK: - CoreDataStack (Removing Data)
 
+extension CoreDataStack{
+    func deleteData(object : NSManagedObject){
+        context.performAndWait() {
+            
+            if self.context.hasChanges {
+                do {
+                    try self.context.delete(object)
+                } catch {
+                    fatalError("Error while deleting object: \(error)")
+                }
+
+                // now we save in the background
+                self.persistingContext.performAndWait {
+                    do {
+                        try self.persistingContext.delete(object)
+                    } catch {
+                        fatalError("Error while saving persisting context: \(error)")
+                    }
+                }
+                self.save()
+
+            }
+        }
+        
+    }
+    
+    
+}
+
+
 internal extension CoreDataStack  {
     
+
     func dropAllData() throws {
         // delete all the objects in the db. This won't delete the files, it will
         // just leave empty tables.
@@ -139,7 +170,7 @@ extension CoreDataStack {
                 }
                 
                 // now we save in the background
-                self.persistingContext.perform() {
+                self.persistingContext.performAndWait() {
                     do {
                         try self.persistingContext.save()
                     } catch {

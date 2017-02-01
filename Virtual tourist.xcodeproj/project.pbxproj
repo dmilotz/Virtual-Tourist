@@ -26,6 +26,8 @@
 		1128D2171E3ED5E500AFAB20 /* Photo+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1128D2131E3ED5E500AFAB20 /* Photo+CoreDataClass.swift */; };
 		1128D2181E3ED5E500AFAB20 /* Photo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1128D2141E3ED5E500AFAB20 /* Photo+CoreDataProperties.swift */; };
 		1128D21A1E3F116100AFAB20 /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1128D2191E3F116100AFAB20 /* PhotoCell.swift */; };
+		11B8EC8F1E4185D8006E3BB8 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B8EC8E1E4185D8006E3BB8 /* UIViewExtension.swift */; };
+		11B8EC911E418B09006E3BB8 /* default.png in Resources */ = {isa = PBXBuildFile; fileRef = 11B8EC901E418B09006E3BB8 /* default.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +73,8 @@
 		1128D2131E3ED5E500AFAB20 /* Photo+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Photo+CoreDataClass.swift"; sourceTree = "<group>"; };
 		1128D2141E3ED5E500AFAB20 /* Photo+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Photo+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		1128D2191E3F116100AFAB20 /* PhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
+		11B8EC8E1E4185D8006E3BB8 /* UIViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
+		11B8EC901E418B09006E3BB8 /* default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -170,6 +174,7 @@
 				1128D1DF1E3D4B2800AFAB20 /* TravelLocationViewController.swift */,
 				1128D1E11E3D4B9300AFAB20 /* PhotoAlbumViewController.swift */,
 				1128D2191E3F116100AFAB20 /* PhotoCell.swift */,
+				11B8EC8E1E4185D8006E3BB8 /* UIViewExtension.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -177,6 +182,7 @@
 		1128D1E31E3D4C3A00AFAB20 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				11B8EC901E418B09006E3BB8 /* default.png */,
 				1128D1A61E3C380A00AFAB20 /* Main.storyboard */,
 				1128D1AC1E3C380A00AFAB20 /* Assets.xcassets */,
 				1128D1AE1E3C380A00AFAB20 /* LaunchScreen.storyboard */,
@@ -303,6 +309,7 @@
 			files = (
 				1128D1B01E3C380A00AFAB20 /* LaunchScreen.storyboard in Resources */,
 				1128D1AD1E3C380A00AFAB20 /* Assets.xcassets in Resources */,
+				11B8EC911E418B09006E3BB8 /* default.png in Resources */,
 				1128D1A81E3C380A00AFAB20 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -328,6 +335,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				11B8EC8F1E4185D8006E3BB8 /* UIViewExtension.swift in Sources */,
 				1128D21A1E3F116100AFAB20 /* PhotoCell.swift in Sources */,
 				1128D1A51E3C380A00AFAB20 /* ViewController.swift in Sources */,
 				1128D2181E3ED5E500AFAB20 /* Photo+CoreDataProperties.swift in Sources */,
@@ -590,6 +598,7 @@
 				1128D1CC1E3C380A00AFAB20 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		1128D1CD1E3C380A00AFAB20 /* Build configuration list for PBXNativeTarget "Virtual touristTests" */ = {
 			isa = XCConfigurationList;
@@ -598,6 +607,7 @@
 				1128D1CF1E3C380A00AFAB20 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		1128D1D01E3C380A00AFAB20 /* Build configuration list for PBXNativeTarget "Virtual touristUITests" */ = {
 			isa = XCConfigurationList;
@@ -606,6 +616,7 @@
 				1128D1D21E3C380A00AFAB20 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
