@@ -85,7 +85,6 @@ class PhotoAlbumViewController :UIViewController {
                             photo.imgData = nil
                             self.photos.append(photo)
                         }
-                     
                     }
                     self.newCollectionButton.isEnabled = true
                     OperationQueue.main.addOperation {
@@ -98,7 +97,6 @@ class PhotoAlbumViewController :UIViewController {
                 self.displayAlert(error!, title: "")
             }
         }
-        
     }
     
     
